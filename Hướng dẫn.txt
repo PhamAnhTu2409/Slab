@@ -1,0 +1,9 @@
+Bấm tổ hợp "Ctrl + ~"
+Gõ cd .\backend nhấn ENTER
+Gõ python app.py nhấn ENTER
+
+Bấm tổ hợp "Ctrl + Shift + ~"
+Gõ cd .\frontend nhấn ENTER
+Gõ python -m http.server 8000 nhấn ENTER
+
+Mở trình duyệt nhập http://localhost:8000/ và sử dụng

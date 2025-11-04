@@ -3,310 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔬 SlabMaker - Web App</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: var(--primary);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            opacity: 0.9;
-            font-size: 1.1em;
-        }
-        
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            padding: 30px;
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .card {
-            background: var(--light);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .card h2 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--secondary);
-        }
-        
-        .file-upload {
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-        
-        .file-upload:hover {
-            border-color: var(--secondary);
-        }
-        
-        .file-upload.dragover {
-            border-color: var(--success);
-            background: rgba(39, 174, 96, 0.1);
-        }
-        
-        .miller-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .vacuum-control {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .slider-container {
-            flex: 1;
-        }
-        
-        .slider {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #ddd;
-            outline: none;
-        }
-        
-        .checkbox-group {
-            display: flex;
-            gap: 20px;
-            margin-top: 10px;
-        }
-        
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        
-        .btn {
-            background: var(--secondary);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .btn:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .btn-primary {
-            background: var(--success);
-            width: 100%;
-            justify-content: center;
-        }
-        
-        .btn-primary:hover {
-            background: #219a52;
-        }
-        
-        .btn-secondary {
-            background: var(--warning);
-        }
-        
-        .btn-secondary:hover {
-            background: #e67e22;
-        }
-        
-        .results {
-            background: var(--dark);
-            color: white;
-            border-radius: 8px;
-            padding: 20px;
-            height: 400px;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .log-entry {
-            margin-bottom: 8px;
-            padding: 5px;
-            border-radius: 4px;
-        }
-        
-        .log-success {
-            background: rgba(39, 174, 96, 0.2);
-            color: #2ecc71;
-        }
-        
-        .log-error {
-            background: rgba(231, 76, 60, 0.2);
-            color: #e74c3c;
-        }
-        
-        .log-warning {
-            background: rgba(243, 156, 18, 0.2);
-            color: #f39c12;
-        }
-        
-        .log-info {
-            background: rgba(52, 152, 219, 0.2);
-            color: #3498db;
-        }
-        
-        .download-section {
-            margin-top: 20px;
-            text-align: center;
-        }
-        
-        .download-btn {
-            background: var(--success);
-            margin: 5px;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .feature {
-            text-align: center;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .feature-icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--secondary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .file-info {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            border-left: 4px solid var(--secondary);
-        }
-    </style>
+    <title>🔬 SlabMaker - Công cụ tạo Surface</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🔬 SlabMaker Web</h1>
-            <p>Công cụ tạo Surface trực tuyến - Không cần cài đặt</p>
+            <p>Công cụ tạo Surface từ cấu trúc tinh thể - Kết nối Backend thật</p>
         </div>
         
         <div class="main-content">
@@ -317,35 +21,45 @@
                 <div class="form-group">
                     <label>Chọn file cấu trúc:</label>
                     <div class="file-upload" id="fileUpload">
-                        <div>📁 Kéo thả file vào đây hoặc click để chọn</div>
-                        <div style="font-size: 12px; margin-top: 10px; opacity: 0.7;">
-                            Hỗ trợ: POSCAR (.vasp), CIF (.cif), QE Input (.in)
-                        </div>
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Kéo thả file vào đây hoặc click để chọn</div>
+                        <div class="upload-info">Hỗ trợ: POSCAR (.vasp), CIF (.cif), QE Input (.in)</div>
                     </div>
                     <input type="file" id="fileInput" accept=".vasp,.cif,.in,.txt" style="display: none;">
                     <div class="file-info" id="fileInfo" style="display: none;">
-                        <strong>📄 File đã chọn:</strong> <span id="fileName"></span>
-                        <br><strong>📏 Kích thước:</strong> <span id="fileSize"></span>
-                        <br><strong>🔍 Định dạng:</strong> <span id="fileFormat"></span>
+                        <div class="file-details">
+                            <strong>📄 File:</strong> <span id="fileName"></span>
+                            <br><strong>📏 Size:</strong> <span id="fileSize"></span>
+                            <br><strong>🔍 Format:</strong> <span id="fileFormat"></span>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label>Chỉ số Miller (h,k,l):</label>
                     <div class="miller-inputs">
-                        <input type="number" class="form-control" id="hIndex" value="1" min="0" max="10">
-                        <input type="number" class="form-control" id="kIndex" value="1" min="0" max="10">
-                        <input type="number" class="form-control" id="lIndex" value="1" min="0" max="10">
+                        <div class="input-group">
+                            <label>h:</label>
+                            <input type="number" class="form-control" id="hIndex" value="1" min="0" max="10">
+                        </div>
+                        <div class="input-group">
+                            <label>k:</label>
+                            <input type="number" class="form-control" id="kIndex" value="1" min="0" max="10">
+                        </div>
+                        <div class="input-group">
+                            <label>l:</label>
+                            <input type="number" class="form-control" id="lIndex" value="1" min="0" max="10">
+                        </div>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label>Độ dày chân không:</label>
                     <div class="vacuum-control">
-                        <div class="slider-container">
-                            <input type="range" class="slider" id="vacuumSlider" min="5" max="30" value="15" step="1">
+                        <input type="range" class="slider" id="vacuumSlider" min="5" max="30" value="15" step="1">
+                        <div class="slider-value">
+                            <span id="vacuumValue">15.0</span> Å
                         </div>
-                        <span id="vacuumValue">15.0 Å</span>
                     </div>
                 </div>
                 
@@ -358,334 +72,132 @@
                     <label>Định dạng đầu ra:</label>
                     <div class="checkbox-group">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="outputPOSCAR" checked>
-                            <span>POSCAR (.vasp)</span>
+                            <input type="radio" name="outputFormat" value="poscar" checked>
+                            <span class="checkmark"></span>
+                            POSCAR (.vasp)
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" id="outputQE">
-                            <span>QE Input (.in)</span>
+                            <input type="radio" name="outputFormat" value="qe">
+                            <span class="checkmark"></span>
+                            QE Input (.in)
                         </label>
                     </div>
                 </div>
                 
-                <button class="btn btn-primary" onclick="processSlab()">
-                    🔄 Tạo Surface
+                <button class="btn btn-primary" id="processBtn" onclick="processSlab()">
+                    <span class="btn-icon">🔄</span>
+                    Tạo Surface
                 </button>
                 
                 <div class="loading" id="loading">
                     <div class="spinner"></div>
-                    <div>Đang xử lý... Vui lòng chờ</div>
+                    <div class="loading-text">Đang xử lý... Vui lòng chờ</div>
                 </div>
             </div>
             
             <!-- Results Section -->
             <div class="card">
                 <h2>📊 Kết Quả & Thông Tin</h2>
-                <div class="results" id="results">
-                    <div class="log-entry log-info">
-                        🔬 Chào mừng đến với SlabMaker Web!
-                    </div>
-                    <div class="log-entry log-info">
-                        📝 Chọn file cấu trúc và thiết lập thông số để bắt đầu.
+                <div class="results-container">
+                    <div class="results" id="results">
+                        <div class="log-entry log-info">
+                            <span class="log-icon">🔬</span>
+                            Chào mừng đến với SlabMaker Web!
+                        </div>
+                        <div class="log-entry log-info">
+                            <span class="log-icon">📝</span>
+                            Chọn file cấu trúc và thiết lập thông số để bắt đầu.
+                        </div>
                     </div>
                 </div>
                 
                 <div class="download-section" id="downloadSection" style="display: none;">
                     <h3>📥 Download Kết Quả</h3>
-                    <button class="btn download-btn" onclick="downloadFile('poscar')">
-                        💾 Download POSCAR
-                    </button>
-                    <button class="btn download-btn" onclick="downloadFile('qe')">
-                        💾 Download QE Input
-                    </button>
+                    <div class="download-buttons">
+                        <button class="btn download-btn" onclick="downloadFile('poscar')">
+                            <span class="btn-icon">💾</span>
+                            Download POSCAR
+                        </button>
+                        <button class="btn download-btn" onclick="downloadFile('qe')">
+                            <span class="btn-icon">💾</span>
+                            Download QE Input
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Info -->
+                <div class="results-info" id="resultsInfo" style="display: none;">
+                    <h3>📋 Thông Tin Surface</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Số nguyên tử:</span>
+                            <span class="info-value" id="infoNatoms">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Số loại nguyên tử:</span>
+                            <span class="info-value" id="infoNtypes">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nguyên tố:</span>
+                            <span class="info-value" id="infoElements">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Chân không:</span>
+                            <span class="info-value" id="infoVacuum">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Độ dày slab:</span>
+                            <span class="info-value" id="infoSlabThickness">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Diện tích surface:</span>
+                            <span class="info-value" id="infoSurfaceArea">-</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
+        <!-- Connection Status -->
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-label">Backend:</span>
+                <span class="status-value" id="backendStatus">Đang kiểm tra...</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">API:</span>
+                <span class="status-value" id="apiStatus">Chưa kết nối</span>
+            </div>
+        </div>
+
         <!-- Features Section -->
-        <div style="padding: 30px;">
-            <h2 style="text-align: center; margin-bottom: 30px; color: var(--primary);">🎯 Tính Năng Nổi Bật</h2>
-            <div class="features">
-                <div class="feature">
+        <div class="features-section">
+            <h2>🎯 Tính Năng</h2>
+            <div class="features-grid">
+                <div class="feature-card">
                     <div class="feature-icon">🔍</div>
                     <h3>Tự Động Nhận Diện</h3>
-                    <p>Tự động detect định dạng file: POSCAR, CIF, QE Input</p>
+                    <p>Nhận diện định dạng file tự động: POSCAR, CIF, QE Input</p>
                 </div>
-                <div class="feature">
+                <div class="feature-card">
                     <div class="feature-icon">⚡</div>
-                    <h3>Xử Lý Nhanh</h3>
-                    <p>Tạo surface nhanh chóng với thuật toán tối ưu</p>
+                    <h3>Xử Lý Thật</h3>
+                    <p>Kết nối backend Python để xử lý dữ liệu thực</p>
                 </div>
-                <div class="feature">
+                <div class="feature-card">
                     <div class="feature-icon">📱</div>
-                    <h3>Không Cần Cài Đặt</h3>
-                    <p>Chạy trực tiếp trên trình duyệt, mọi thiết bị</p>
+                    <h3>Web App</h3>
+                    <p>Chạy trực tiếp trên trình duyệt, không cần cài đặt</p>
                 </div>
-                <div class="feature">
+                <div class="feature-card">
                     <div class="feature-icon">🔒</div>
-                    <h3>Bảo Mật Dữ Liệu</h3>
-                    <p>Xử lý cục bộ, file không upload lên server</p>
+                    <h3>Bảo Mật</h3>
+                    <p>Xử lý cục bộ, file không upload lên server bên ngoài</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Biến toàn cục
-        let currentFile = null;
-        let processingResults = null;
-        
-        // Khởi tạo
-        document.addEventListener('DOMContentLoaded', function() {
-            initEventListeners();
-        });
-        
-        function initEventListeners() {
-            // File upload
-            const fileUpload = document.getElementById('fileUpload');
-            const fileInput = document.getElementById('fileInput');
-            
-            fileUpload.addEventListener('click', () => fileInput.click());
-            fileUpload.addEventListener('dragover', handleDragOver);
-            fileUpload.addEventListener('drop', handleFileDrop);
-            fileInput.addEventListener('change', handleFileSelect);
-            
-            // Slider
-            const vacuumSlider = document.getElementById('vacuumSlider');
-            vacuumSlider.addEventListener('input', updateVacuumValue);
-        }
-        
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.currentTarget.classList.add('dragover');
-        }
-        
-        function handleFileDrop(e) {
-            e.preventDefault();
-            e.currentTarget.classList.remove('dragover');
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                processFile(files[0]);
-            }
-        }
-        
-        function handleFileSelect(e) {
-            const files = e.target.files;
-            if (files.length > 0) {
-                processFile(files[0]);
-            }
-        }
-        
-        function processFile(file) {
-            currentFile = file;
-            
-            // Hiển thị thông tin file
-            document.getElementById('fileName').textContent = file.name;
-            document.getElementById('fileSize').textContent = formatFileSize(file.size);
-            document.getElementById('fileFormat').textContent = detectFileFormat(file.name);
-            document.getElementById('fileInfo').style.display = 'block';
-            
-            // Log thông tin
-            addLog(`📁 Đã chọn file: ${file.name}`, 'success');
-            addLog(`📏 Kích thước: ${formatFileSize(file.size)}`, 'info');
-            addLog(`🔍 Định dạng: ${detectFileFormat(file.name)}`, 'info');
-        }
-        
-        function detectFileFormat(filename) {
-            const ext = filename.split('.').pop().toLowerCase();
-            switch(ext) {
-                case 'vasp': case 'poscar': return 'POSCAR/VASP';
-                case 'cif': return 'CIF';
-                case 'in': case 'txt': return 'Quantum ESPRESSO';
-                default: return 'Không xác định';
-            }
-        }
-        
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-        
-        function updateVacuumValue() {
-            const slider = document.getElementById('vacuumSlider');
-            const value = document.getElementById('vacuumValue');
-            value.textContent = slider.value + ' Å';
-        }
-        
-        function addLog(message, type = 'info') {
-            const results = document.getElementById('results');
-            const logEntry = document.createElement('div');
-            logEntry.className = `log-entry log-${type}`;
-            logEntry.textContent = message;
-            results.appendChild(logEntry);
-            results.scrollTop = results.scrollHeight;
-        }
-        
-        function processSlab() {
-            if (!currentFile) {
-                addLog('❌ Vui lòng chọn file cấu trúc trước!', 'error');
-                return;
-            }
-            
-            // Hiển thị loading
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('downloadSection').style.display = 'none';
-            
-            // Giả lập xử lý (trong thực tế sẽ gọi API hoặc WebAssembly)
-            setTimeout(() => {
-                simulateProcessing();
-            }, 2000);
-        }
-        
-        function simulateProcessing() {
-            const h = document.getElementById('hIndex').value;
-            const k = document.getElementById('kIndex').value;
-            const l = document.getElementById('lIndex').value;
-            const vacuum = document.getElementById('vacuumSlider').value;
-            const layers = document.getElementById('layers').value;
-            
-            addLog('=' .repeat(50), 'info');
-            addLog('🔄 Bắt đầu xử lý...', 'info');
-            addLog(`🔍 Đang đọc file: ${currentFile.name}`, 'info');
-            addLog(`📊 Thông tin cấu trúc:`, 'info');
-            addLog(`   • Số nguyên tử: 24`, 'info');
-            addLog(`   • Số loại nguyên tử: 2`, 'info');
-            addLog(`   • Các nguyên tố: Ga, O`, 'info');
-            addLog(`🔧 Đang tạo surface (${h}${k}${l})...`, 'info');
-            addLog(`📏 Chân không: ${vacuum} Å`, 'info');
-            addLog(`📐 Số lớp: ${layers}`, 'info');
-            
-            // Giả lập kết quả
-            setTimeout(() => {
-                addLog('\n📊 THÔNG TIN SURFACE ĐÃ TẠO:', 'success');
-                addLog(`   • Số nguyên tử: 12`, 'success');
-                addLog(`   • Số loại nguyên tử: 2`, 'success');
-                addLog(`   • Chân không: ${vacuum} Å`, 'success');
-                addLog(`   • Độ dày slab: 8.5 Å`, 'success');
-                addLog(`   • Diện tích surface: 45.2 Å²`, 'success');
-                addLog(`💾 Đã lưu file kết quả`, 'success');
-                addLog('\n🎉 HOÀN THÀNH! Surface đã được tạo thành công!', 'success');
-                addLog('=' .repeat(50), 'info');
-                
-                // Hiển thị nút download
-                document.getElementById('downloadSection').style.display = 'block';
-                document.getElementById('loading').style.display = 'none';
-                
-                // Lưu kết quả giả lập
-                processingResults = {
-                    poscar: generateSamplePOSCAR(h, k, l, vacuum),
-                    qe: generateSampleQEInput(h, k, l, vacuum)
-                };
-                
-            }, 1500);
-        }
-        
-        function generateSamplePOSCAR(h, k, l, vacuum) {
-            return `# Surface ${h}${k}${l} - Generated by SlabMaker Web
-1.0
-   5.0712226922    0.0000000000    0.0000000000
-  -2.5356113461    4.3918076797    0.0000000000
-   0.0000000000    0.0000000000   ${(20 + parseFloat(vacuum)).toFixed(6)}
-Ga O
-  8 12
-Direct
-  0.333333333333 0.666666666667 0.267512363792
-  0.000000000000 0.000000000000 0.326652339609
-  0.666666666667 0.333333333333 0.348679423111
-  0.333333333333 0.666666666667 0.407819398929
-  0.000000000000 0.000000000000 0.429846482431
-  0.666666666667 0.333333333333 0.488986458249
-  0.333333333333 0.666666666667 0.511013541751
-  0.000000000000 0.000000000000 0.570153517569
-  0.250000000000 0.250000000000 0.195000000000
-  0.750000000000 0.750000000000 0.195000000000
-  0.750000000000 0.250000000000 0.305000000000
-  0.250000000000 0.750000000000 0.305000000000
-  0.250000000000 0.250000000000 0.415000000000
-  0.750000000000 0.750000000000 0.415000000000
-  0.750000000000 0.250000000000 0.525000000000
-  0.250000000000 0.750000000000 0.525000000000
-  0.250000000000 0.250000000000 0.635000000000
-  0.750000000000 0.750000000000 0.635000000000
-  0.750000000000 0.250000000000 0.745000000000
-  0.250000000000 0.750000000000 0.745000000000`;
-        }
-        
-        function generateSampleQEInput(h, k, l, vacuum) {
-            return `&CONTROL
-  calculation='scf', pseudo_dir='./', outdir='./tmp'
-  tprnfor=.true., tstress=.true., forc_conv_thr=1.0d-4
-/
-&SYSTEM
-  ibrav=0, nat=20, ntyp=2
-  occupations='smearing', smearing='gauss', degauss=1.0d-2
-  ecutwfc=50, ecutrho=500
-/
-&ELECTRONS
-  conv_thr=1.0d-8
-  mixing_beta=0.7d0
-/
-&IONS
-/
-&CELL
-/
-ATOMIC_SPECIES
- Ga 69.723 Ga.UPF
- O  15.999 O.UPF
-CELL_PARAMETERS angstrom
-   5.0712226922    0.0000000000    0.0000000000
-  -2.5356113461    4.3918076797    0.0000000000
-   0.0000000000    0.0000000000   ${(20 + parseFloat(vacuum)).toFixed(6)}
-ATOMIC_POSITIONS crystal
- Ga  0.333333333333  0.666666666667  0.267512363792
- Ga  0.000000000000  0.000000000000  0.326652339609
- Ga  0.666666666667  0.333333333333  0.348679423111
- Ga  0.333333333333  0.666666666667  0.407819398929
- Ga  0.000000000000  0.000000000000  0.429846482431
- Ga  0.666666666667  0.333333333333  0.488986458249
- Ga  0.333333333333  0.666666666667  0.511013541751
- Ga  0.000000000000  0.000000000000  0.570153517569
- O   0.250000000000  0.250000000000  0.195000000000
- O   0.750000000000  0.750000000000  0.195000000000
- O   0.750000000000  0.250000000000  0.305000000000
- O   0.250000000000  0.750000000000  0.305000000000
- O   0.250000000000  0.250000000000  0.415000000000
- O   0.750000000000  0.750000000000  0.415000000000
- O   0.750000000000  0.250000000000  0.525000000000
- O   0.250000000000  0.750000000000  0.525000000000
- O   0.250000000000  0.250000000000  0.635000000000
- O   0.750000000000  0.750000000000  0.635000000000
- O   0.750000000000  0.250000000000  0.745000000000
- O   0.250000000000  0.750000000000  0.745000000000
-K_POINTS automatic
- 4 4 1 0 0 0`;
-        }
-        
-        function downloadFile(type) {
-            if (!processingResults) {
-                addLog('❌ Không có kết quả để download!', 'error');
-                return;
-            }
-            
-            const content = type === 'poscar' ? processingResults.poscar : processingResults.qe;
-            const filename = type === 'poscar' ? 'surface.vasp' : 'surface.in';
-            
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            addLog(`✅ Đã download: ${filename}`, 'success');
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
