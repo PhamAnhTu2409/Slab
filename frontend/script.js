@@ -1,6 +1,9 @@
 // Biến toàn cục
 let currentFile = null;
-let processingResults = null;
+let processingResults = {
+    poscar: null,
+    qe: null
+};
 const API_BASE_URL = 'http://localhost:5000';
 
 // Khởi tạo ứng dụng
@@ -127,7 +130,7 @@ async function checkBackendConnection() {
             backendStatus.textContent = 'Đã kết nối';
             backendStatus.className = 'status-value connected';
             apiStatus.textContent = 'Sẵn sàng';
-            apiStatus.className = 'status-value connected';
+            apiStatus.className = 'status-value ready';
             addLog('✅ Backend đã sẵn sàng!', 'success');
         } else {
             throw new Error('Backend response not OK');
@@ -151,6 +154,55 @@ async function processSlab() {
     showLoading();
     clearResults();
     
+    // Cập nhật trạng thái
+    document.getElementById('apiStatus').textContent = 'Đang xử lý...';
+    document.getElementById('apiStatus').className = 'status-value processing';
+
+    addLog('🔄 Bắt đầu xử lý tạo surface...', 'info');
+    addLog(`📐 Chỉ số Miller: (${document.getElementById('hIndex').value},${document.getElementById('kIndex').value},${document.getElementById('lIndex').value})`, 'info');
+    addLog(`📏 Chân không: ${document.getElementById('vacuumSlider').value}Å`, 'info');
+    addLog(`📊 Số lớp: ${document.getElementById('layers').value}`, 'info');
+
+    try {
+        // Tạo cả 2 định dạng
+        await createBothFormats();
+        
+        // Cập nhật trạng thái thành công
+        document.getElementById('apiStatus').textContent = 'Hoàn thành';
+        document.getElementById('apiStatus').className = 'status-value connected';
+        
+        addLog('🎉 Đã tạo thành công cả 2 định dạng!', 'success');
+        addLog('💡 Bạn có thể download POSCAR cho VASP hoặc QE Input cho Quantum ESPRESSO', 'info');
+        
+    } catch (error) {
+        console.error('Processing Error:', error);
+        addLog('❌ Lỗi xử lý: ' + error.message, 'error');
+        document.getElementById('apiStatus').textContent = 'Lỗi';
+        document.getElementById('apiStatus').className = 'status-value disconnected';
+    } finally {
+        hideLoading();
+    }
+}
+
+async function createBothFormats() {
+    // Tạo POSCAR
+    addLog('📄 Đang tạo file POSCAR...', 'info');
+    const poscarResult = await createFormat('poscar');
+    processingResults.poscar = poscarResult;
+    addLog('✅ Đã tạo POSCAR thành công', 'success');
+    
+    // Tạo QE Input
+    addLog('⚡ Đang tạo file QE Input...', 'info');
+    const qeResult = await createFormat('qe');
+    processingResults.qe = qeResult;
+    addLog('✅ Đã tạo QE Input thành công', 'success');
+    
+    // Hiển thị thông tin kết quả (lấy từ kết quả đầu tiên)
+    displayResultsInfo(poscarResult.results);
+    showDownloadSection();
+}
+
+async function createFormat(format) {
     const formData = new FormData();
     formData.append('file', currentFile);
     formData.append('h', document.getElementById('hIndex').value);
@@ -158,55 +210,20 @@ async function processSlab() {
     formData.append('l', document.getElementById('lIndex').value);
     formData.append('vacuum', document.getElementById('vacuumSlider').value);
     formData.append('layers', document.getElementById('layers').value);
-    
-    const outputFormat = document.querySelector('input[name="outputFormat"]:checked').value;
-    formData.append('format', outputFormat);
+    formData.append('format', format);
 
-    addLog('🔄 Đang gửi yêu cầu đến backend...', 'info');
+    const response = await fetch(`${API_BASE_URL}/process`, {
+        method: 'POST',
+        body: formData
+    });
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/process`, {
-            method: 'POST',
-            body: formData
-        });
+    const result = await response.json();
 
-        const result = await response.json();
-
-        if (!response.ok) {
-            throw new Error(result.error || 'Lỗi không xác định từ server');
-        }
-
-        // Hiển thị logs từ backend
-        if (result.logs && Array.isArray(result.logs)) {
-            result.logs.forEach(log => {
-                addLog(log.message, log.type || 'info');
-            });
-        }
-
-        if (result.success) {
-            // Lưu kết quả thật từ backend
-            processingResults = {
-                content: result.file_content,
-                filename: result.filename,
-                format: result.format,
-                results: result.results
-            };
-            
-            // Hiển thị thông tin kết quả
-            displayResultsInfo(result.results);
-            showDownloadSection();
-            
-            addLog('🎉 Xử lý hoàn tất! Bạn có thể download file kết quả.', 'success');
-        } else {
-            addLog('❌ ' + (result.error || 'Xử lý thất bại'), 'error');
-        }
-    } catch (error) {
-        console.error('API Error:', error);
-        addLog('❌ Lỗi kết nối đến server: ' + error.message, 'error');
-        addLog('💡 Đảm bảo backend đang chạy: python app.py', 'info');
-    } finally {
-        hideLoading();
+    if (!response.ok) {
+        throw new Error(result.error || `Lỗi tạo định dạng ${format}`);
     }
+
+    return result;
 }
 
 function displayResultsInfo(results) {
@@ -226,6 +243,7 @@ function clearResults() {
     document.getElementById('results').innerHTML = '';
     document.getElementById('downloadSection').style.display = 'none';
     document.getElementById('resultsInfo').style.display = 'none';
+    processingResults = { poscar: null, qe: null };
 }
 
 function showLoading() {
@@ -242,70 +260,55 @@ function showDownloadSection() {
     document.getElementById('downloadSection').style.display = 'block';
 }
 
-async function downloadFile(type) {
-    if (!processingResults) {
-        addLog('❌ Không có kết quả để download!', 'error');
+function downloadFile(type) {
+    const result = processingResults[type];
+    
+    if (!result || !result.file_content) {
+        addLog(`❌ Không có kết quả cho định dạng ${type.toUpperCase()}!`, 'error');
         return;
     }
 
     try {
-        let content, filename;
-        
-        if (type === 'poscar') {
-            content = processingResults.content;
-            filename = processingResults.filename;
-        } else {
-            // Nếu user muốn download format khác, gọi API lại
-            addLog('🔄 Đang tạo file QE input...', 'info');
-            
-            const formData = new FormData();
-            formData.append('file', currentFile);
-            formData.append('h', document.getElementById('hIndex').value);
-            formData.append('k', document.getElementById('kIndex').value);
-            formData.append('l', document.getElementById('lIndex').value);
-            formData.append('vacuum', document.getElementById('vacuumSlider').value);
-            formData.append('layers', document.getElementById('layers').value);
-            formData.append('format', 'qe');
-            
-            const response = await fetch(`${API_BASE_URL}/process`, {
-                method: 'POST',
-                body: formData
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                content = result.file_content;
-                filename = result.filename;
-                processingResults.content = content; // Cache kết quả
-            } else {
-                throw new Error(result.error || 'Lỗi tạo file QE input');
-            }
-        }
-        
-        // Tạo và download file
-        const blob = new Blob([content], { type: 'text/plain' });
+        const blob = new Blob([result.file_content], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = filename;
+        a.download = result.filename;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
         
-        addLog(`✅ Đã download: ${filename}`, 'success');
+        addLog(`✅ Đã download: ${result.filename}`, 'success');
         
     } catch (error) {
         addLog(`❌ Lỗi download: ${error.message}`, 'error');
     }
 }
 
+async function downloadBoth() {
+    if (!processingResults.poscar || !processingResults.qe) {
+        addLog('❌ Chưa có đủ kết quả để download cả hai!', 'error');
+        return;
+    }
+
+    addLog('📦 Đang download cả hai định dạng...', 'info');
+    
+    // Download POSCAR
+    downloadFile('poscar');
+    
+    // Đợi một chút rồi download QE
+    setTimeout(() => {
+        downloadFile('qe');
+        addLog('🎉 Đã download cả hai định dạng thành công!', 'success');
+    }, 500);
+}
+
 // Utility function để thêm timeout cho fetch
 const originalFetch = window.fetch;
 window.fetch = function(...args) {
     const [resource, config] = args;
-    const timeout = 30000; // 30 seconds
+    const timeout = 60000; // 60 seconds cho xử lý lớn
     
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);

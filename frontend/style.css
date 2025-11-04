@@ -8,6 +8,8 @@
     --dark: #2c3e50;
     --gray: #95a5a6;
     --border: #bdc3c7;
+    --poscar: #9b59b6;
+    --qe: #e67e22;
 }
 
 * {
@@ -185,18 +187,17 @@ body {
 
 /* Slider */
 .vacuum-control {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+    margin-top: 10px;
 }
 
 .slider {
-    flex: 1;
+    width: 100%;
     height: 6px;
     border-radius: 3px;
     background: var(--border);
     outline: none;
     -webkit-appearance: none;
+    margin: 10px 0;
 }
 
 .slider::-webkit-slider-thumb {
@@ -210,62 +211,12 @@ body {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.slider-value {
-    min-width: 60px;
-    text-align: center;
-    font-weight: 600;
-    color: var(--primary);
-}
-
-/* Checkbox Group */
-.checkbox-group {
+.slider-labels {
     display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: background 0.3s ease;
-}
-
-.checkbox-label:hover {
-    background: rgba(52, 152, 219, 0.1);
-}
-
-.checkbox-label input[type="radio"] {
-    display: none;
-}
-
-.checkmark {
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--border);
-    border-radius: 50%;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.checkbox-label input[type="radio"]:checked + .checkmark {
-    border-color: var(--secondary);
-    background: var(--secondary);
-}
-
-.checkbox-label input[type="radio"]:checked + .checkmark::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    background: white;
-    border-radius: 50%;
+    justify-content: space-between;
+    font-size: 0.8em;
+    color: var(--gray);
+    margin-top: 5px;
 }
 
 /* Buttons */
@@ -286,7 +237,6 @@ body {
 }
 
 .btn:hover {
-    background: #2980b9;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
@@ -316,16 +266,49 @@ body {
     font-size: 1.2em;
 }
 
+/* Download Buttons */
+.download-btn {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.poscar-btn {
+    background: var(--poscar);
+}
+
+.poscar-btn:hover {
+    background: #8e44ad;
+}
+
+.qe-btn {
+    background: var(--qe);
+}
+
+.qe-btn:hover {
+    background: #d35400;
+}
+
+.both-btn {
+    background: var(--success);
+    font-weight: 700;
+}
+
+.both-btn:hover {
+    background: #219a52;
+}
+
 /* Results */
 .results-container {
     background: var(--dark);
     color: white;
     border-radius: 8px;
     overflow: hidden;
+    margin-bottom: 20px;
 }
 
 .results {
-    height: 300px;
+    height: 250px;
     overflow-y: auto;
     padding: 20px;
     font-family: 'Courier New', monospace;
@@ -373,32 +356,37 @@ body {
 /* Download Section */
 .download-section {
     margin-top: 20px;
-    text-align: center;
 }
 
 .download-section h3 {
     margin-bottom: 15px;
     color: var(--primary);
+    text-align: center;
+}
+
+.download-notice {
+    background: rgba(52, 152, 219, 0.1);
+    border: 1px solid var(--secondary);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--dark);
+}
+
+.notice-icon {
+    margin-right: 8px;
 }
 
 .download-buttons {
     display: flex;
+    flex-direction: column;
     gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.download-btn {
-    background: var(--success);
-}
-
-.download-btn:hover {
-    background: #219a52;
 }
 
 /* Results Info */
 .results-info {
-    margin-top: 20px;
+    margin-bottom: 20px;
     padding: 20px;
     background: white;
     border-radius: 8px;
@@ -408,6 +396,7 @@ body {
 .results-info h3 {
     margin-bottom: 15px;
     color: var(--primary);
+    text-align: center;
 }
 
 .info-grid {
@@ -504,6 +493,16 @@ body {
     color: white;
 }
 
+.status-value.ready {
+    background: var(--success);
+    color: white;
+}
+
+.status-value.processing {
+    background: var(--secondary);
+    color: white;
+}
+
 /* Features Section */
 .features-section {
     padding: 40px 30px;
@@ -579,11 +578,6 @@ body {
         gap: 10px;
     }
     
-    .checkbox-group {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
     .download-buttons {
         flex-direction: column;
     }
@@ -595,5 +589,9 @@ body {
     
     .info-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .results {
+        height: 200px;
     }
 }

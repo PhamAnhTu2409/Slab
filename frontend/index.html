@@ -10,7 +10,7 @@
     <div class="container">
         <div class="header">
             <h1>🔬 SlabMaker Web</h1>
-            <p>Công cụ tạo Surface từ cấu trúc tinh thể - Kết nối Backend thật</p>
+            <p>Công cụ tạo Surface từ cấu trúc tinh thể - Luôn xuất cả 2 định dạng</p>
         </div>
         
         <div class="main-content">
@@ -54,11 +54,12 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Độ dày chân không:</label>
+                    <label>Độ dày chân không: <span id="vacuumValue">15.0</span> Å</label>
                     <div class="vacuum-control">
                         <input type="range" class="slider" id="vacuumSlider" min="5" max="30" value="15" step="1">
-                        <div class="slider-value">
-                            <span id="vacuumValue">15.0</span> Å
+                        <div class="slider-labels">
+                            <span>5Å</span>
+                            <span>30Å</span>
                         </div>
                     </div>
                 </div>
@@ -68,23 +69,7 @@
                     <input type="number" class="form-control" id="layers" value="1" min="1" max="10">
                 </div>
                 
-                <div class="form-group">
-                    <label>Định dạng đầu ra:</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="radio" name="outputFormat" value="poscar" checked>
-                            <span class="checkmark"></span>
-                            POSCAR (.vasp)
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="radio" name="outputFormat" value="qe">
-                            <span class="checkmark"></span>
-                            QE Input (.in)
-                        </label>
-                    </div>
-                </div>
-                
-                <button class="btn btn-primary" id="processBtn" onclick="processSlab()">
+                <button class="btn btn-primary" id="processBtn">
                     <span class="btn-icon">🔄</span>
                     Tạo Surface
                 </button>
@@ -97,7 +82,8 @@
             
             <!-- Results Section -->
             <div class="card">
-                <h2>📊 Kết Quả & Thông Tin</h2>
+                <h2>📊 Kết Quả & Download</h2>
+                
                 <div class="results-container">
                     <div class="results" id="results">
                         <div class="log-entry log-info">
@@ -108,20 +94,6 @@
                             <span class="log-icon">📝</span>
                             Chọn file cấu trúc và thiết lập thông số để bắt đầu.
                         </div>
-                    </div>
-                </div>
-                
-                <div class="download-section" id="downloadSection" style="display: none;">
-                    <h3>📥 Download Kết Quả</h3>
-                    <div class="download-buttons">
-                        <button class="btn download-btn" onclick="downloadFile('poscar')">
-                            <span class="btn-icon">💾</span>
-                            Download POSCAR
-                        </button>
-                        <button class="btn download-btn" onclick="downloadFile('qe')">
-                            <span class="btn-icon">💾</span>
-                            Download QE Input
-                        </button>
                     </div>
                 </div>
 
@@ -155,6 +127,29 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Download Section -->
+                <div class="download-section" id="downloadSection" style="display: none;">
+                    <h3>📥 Download Kết Quả</h3>
+                    <div class="download-notice">
+                        <span class="notice-icon">💡</span>
+                        Surface đã được tạo thành công! Chọn định dạng để download:
+                    </div>
+                    <div class="download-buttons">
+                        <button class="btn download-btn poscar-btn" onclick="downloadFile('poscar')">
+                            <span class="btn-icon">📄</span>
+                            Download POSCAR (.vasp)
+                        </button>
+                        <button class="btn download-btn qe-btn" onclick="downloadFile('qe')">
+                            <span class="btn-icon">⚡</span>
+                            Download QE Input (.in)
+                        </button>
+                        <button class="btn download-btn both-btn" onclick="downloadBoth()">
+                            <span class="btn-icon">💾</span>
+                            Download Cả Hai
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -165,14 +160,14 @@
                 <span class="status-value" id="backendStatus">Đang kiểm tra...</span>
             </div>
             <div class="status-item">
-                <span class="status-label">API:</span>
-                <span class="status-value" id="apiStatus">Chưa kết nối</span>
+                <span class="status-label">Trạng thái:</span>
+                <span class="status-value" id="apiStatus">Chờ xử lý</span>
             </div>
         </div>
 
         <!-- Features Section -->
         <div class="features-section">
-            <h2>🎯 Tính Năng</h2>
+            <h2>🎯 Tính Năng Nổi Bật</h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">🔍</div>
@@ -180,14 +175,14 @@
                     <p>Nhận diện định dạng file tự động: POSCAR, CIF, QE Input</p>
                 </div>
                 <div class="feature-card">
+                    <div class="feature-icon">📁</div>
+                    <h3>Đa Định Dạng</h3>
+                    <p>Luôn xuất cả 2 định dạng: POSCAR cho VASP và QE Input</p>
+                </div>
+                <div class="feature-card">
                     <div class="feature-icon">⚡</div>
                     <h3>Xử Lý Thật</h3>
                     <p>Kết nối backend Python để xử lý dữ liệu thực</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Web App</h3>
-                    <p>Chạy trực tiếp trên trình duyệt, không cần cài đặt</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🔒</div>
